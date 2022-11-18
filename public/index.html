@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src = "/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="./bootstrap-5.0.2/css/bootstrap.min.css">
+	<title>Template</title>
+</head>
+<body>
+
+	<section id="sec1" style="display: block;" class="text-center" ontouchstart="cnfsec1()">
+		<div style="padding-top: 40%;">
+			<h1 class="fw-bold">Tap to Start</h1>
+		</div>
+	</section>
+
+	<section id="sec2" class="text-center" style="display: none;">
+		<h1 class="fw-bold text-center">Enter Volume</h1>
+
+		<form style="margin-top: 20%;">
+			<div class="form-group col-md-3">
+			  	<h2 for="inputVol">Enter Bottle Volume</h2>
+			  	<input type="text" class="form-control" id="inputVol" placeholder="Enter Volume" oninput="calprice()" required>
+			</div>
+		</form>
+
+		<button type="submit" id="cnfsec1" class="btn btn-primary col-sm-4" style="margin-top: 10%;" onclick="cnfsec2()">Confirm</button>
+
+		<h4 style="margin-top: 10%;">Max amount you have to pay: <span id="maxPayment">0</span> Rs</h4>
+	</section>
+
+	<section id="sec3" style="display: none;">
+		<h1 class="fw-bold text-center">Enter Cash</h1>
+
+		<div style="padding-top: 5%;">
+			<h4>Device Status: <span id="status"></span></h4>
+			<br>
+			<h4>Max Amount You Can Pay: <span id="max">0</span> Rs</h4>
+			<h4>Stacked Amount: <span id="amount"></span> Rs</h4>
+			<h4>Total Amount: <span id="total">0</span> Rs</h4>
+			<h4>Refill Volume: <span id="refill">0</span> ml</h4>
+		</div>
+
+		<div class="text-center">
+			<button type="submit" id="cnfsec2" class="btn btn-primary col-sm-4 " style="margin-top: 10%;" onclick="cnfsec3()">Confirm</button>
+		</div>
+	</section>
+
+	<section id="sec4" style="display: none;" class="text-center">
+		<h1 class="fw-bold">Refilling Status</h1>
+
+		<div style="padding-top: 40%;">
+			<h4>Filling Amount: <span id="fillingAmt">0</span> Rs</h4>
+		</div>
+	</section>
+
+	<section id="sec5" style="display: none;" class="text-center">
+		<div style="padding-top: 40%;">
+			<h1 class="fw-bold">Thank you</h1>
+		</div>
+	</section>
+
+	<section id="error_page" style="display: none;" class="text-center">
+		<div style="padding-top: 40%;">
+			<h1 class="fw-bold">Error!</h1>
+			<h4><span id="error_msg"></span></h4>
+		</div>
+	</section>
+	
+	<script src="./bootstrap-5.0.2/js/bootstrap.min.js"></script>
+	<script src="./script.js"></script>
+</body>
+</html>

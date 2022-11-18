@@ -1,0 +1,9 @@
+body {
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    body {
+      visibility: visible;
+    }
+}
