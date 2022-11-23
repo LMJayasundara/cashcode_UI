@@ -11,9 +11,9 @@ app.use(express.static('public'));
 const BillValidator = require('cashcode-nodejs');
 const device = new BillValidator({
   baudRate: 19200,
-  // autoPort: true,
-  // boardKeywordIdentifier: 'FTDI'
-  path: "COM3"
+  autoPort: true,
+  boardKeywordIdentifier: 'FTDI'
+  // path: "COM3"
 });
 
 function getTotal(cash) {
@@ -30,6 +30,7 @@ function getTotal(cash) {
     //   socket.emit('Status', sts);
     // });
 
+    socket.emit("Connected", "Connected");
     socket.on('maxAmt', (maxAmt)=>{
       maxAmtx = maxAmt;
       console.log("maxAmt:", maxAmtx);
@@ -73,19 +74,19 @@ function getTotal(cash) {
 
   device.on('cassetteRemoved', () => {
     io.emit('Status', {
-      "status": "Cassette removed"
+      "error": "Cassette removed"
     });
   });
 
   device.on('cassetteFull', () => {
     io.emit('Status', {
-      "status": "Cassette full"
+      "error": "Cassette full"
     });
   });
 
   device.on('hold', () => {
     io.emit('Status', {
-      "status": "Device on hold"
+      "error": "Device on hold"
     });
   });
 
@@ -93,7 +94,8 @@ function getTotal(cash) {
     console.log("Returned", cash.amount);
   });
 
-  device.on('accepting', () => {
+  device.on('accepting', async() => {
+    await device.retrieve();
     console.log('accepting');
   });
 
@@ -115,15 +117,21 @@ function getTotal(cash) {
         io.emit('Amount', cash.amount);
       }
     } catch (error) {
-      io.emit('Status', error.message);
+      io.emit('Status', {
+        "error": error.message
+      });
     }
   });
 
   device.on('stacked', (cash) => {
     try {
-      io.emit('Status', `Stacked ${cash.amount}`);
+      io.emit('Status', {
+        "status": `Stacked ${cash.amount}`
+      });
     } catch (error) {
-      io.emit('Status', error.message);
+      io.emit('Status', {
+        "error": error.message
+      });
     }
   });
 
@@ -132,7 +140,7 @@ function getTotal(cash) {
 
 server.listen(app.get('port'), function (err) {
   if (err) {
-    console.log(err.message);
+    console.log("Server error: ", err.message);
   } else {
     console.log('Running on port: ' + app.get('port'));
   }

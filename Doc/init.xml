@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<data>
+  <loop>false</loop>
+  <repeat_times>1</repeat_times>
+  <repeat_period>100</repeat_period>
+  <packets_list>
+    <packet name="POLL">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="RESET">
+      <payload>02030730416F5A</payload>
+    </packet>
+    <packet name="POLL - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="POLL - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="STATUS">
+      <payload>02030631C8A2</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="Get Bill Table">
+      <payload>020306414FD1</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="SET SECURITY">
+      <payload>02030932000000261F</payload>
+    </packet>
+    <packet name="IDENTIFICATION">
+      <payload>02030637FEC7</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy - Copy - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="POLL - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="ENABLE_BILL_TYPES">
+      <payload>02030C34FFFFFFFFFFFFFEF7</payload>
+    </packet>
+    <packet name="POLL - Copy - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="POLL - Copy - Copy - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="POLL - Copy - Copy - Copy - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+    <packet name="POLL - Copy - Copy - Copy - Copy - Copy">
+      <payload>02030733410770</payload>
+    </packet>
+    <packet name="ACK - Copy - Copy - Copy - Copy - Copy">
+      <payload>02030600C282</payload>
+    </packet>
+  </packets_list>
+</data>

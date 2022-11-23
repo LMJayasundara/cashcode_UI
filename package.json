@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cashcode-nodejs": "^1.0.3",
+    "cashcode-nodejs": "^1.0.6",
     "express": "^4.18.2",
     "socket.io": "^4.5.3"
   }

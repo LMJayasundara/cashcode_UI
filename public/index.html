@@ -10,8 +10,20 @@
 	<title>Template</title>
 </head>
 <body>
+	<section id="loadWin" style="display: block;" class="text-center">
+		<div style="padding-top: 40%;">
+			<h1 class="fw-bold">Setting up device</h1>
+		</div>
+	</section>
 
-	<section id="sec1" style="display: block;" class="text-center" ontouchstart="cnfsec1()">
+	<section id="errWin" style="display: none;" class="text-center">
+		<div style="padding-top: 40%;">
+			<h1 class="fw-bold">Error!</h1>
+			<h4><span id="error_msg"></span></h4>
+		</div>
+	</section>
+
+	<section id="sec1" style="display: none;" class="text-center" ontouchstart="cnfsec1()">
 		<div style="padding-top: 40%;">
 			<h1 class="fw-bold">Tap to Start</h1>
 		</div>
@@ -63,13 +75,6 @@
 		</div>
 	</section>
 
-	<section id="error_page" style="display: none;" class="text-center">
-		<div style="padding-top: 40%;">
-			<h1 class="fw-bold">Error!</h1>
-			<h4><span id="error_msg"></span></h4>
-		</div>
-	</section>
-	
 	<script src="./bootstrap-5.0.2/js/bootstrap.min.js"></script>
 	<script src="./script.js"></script>
 </body>

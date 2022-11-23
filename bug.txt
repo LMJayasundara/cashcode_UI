@@ -1,12 +1,8 @@
 cashcode-nodejs lib bug:
-    not detect power off cashcode machine
-    serial port connect bug
-
+    
 
 software bug:
-    error page appering error
+    error page appering bug
     sec3 confirm button validation
     cashcode accept note in only sec3
-
-
-casttle removed => total 0
+    casttle removed => total 0

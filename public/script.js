@@ -2,14 +2,30 @@ const socket = io();
 let timmerevt;
 let defalut_timeout = 10; // Default screen timeout 10s
 
+socket.on("disconnect", () => {
+    console.log('disconnect');
+    hideAll();
+    document.getElementById("loadWin").style.display = "block";
+});
+
+socket.on("Connected", function (data) {
+    if(data == 'Connected'){
+        console.log('connected');
+        hideAll();
+        document.getElementById("sec1").style.display = "block";          
+    };
+});
+
 socket.on('Status', sts => {
     console.log('Status: ', sts)
     if(sts.status != null){
-        document.getElementById("error_page").style.display = "none";
+        document.getElementById("errWin").style.display = "none";
         document.getElementById("status").innerHTML = sts.status;
     }
     else{
-        document.getElementById("error_page").style.display = "block";
+        hideAll();
+        bcktomain();
+        document.getElementById("errWin").style.display = "block";
         document.getElementById("error_msg").innerHTML = sts.error;
     }
 
@@ -42,7 +58,7 @@ async function fackData(){
             amt += 1;
             document.getElementById("fillingAmt").innerHTML = amt;
 
-            if(localStorage.getItem("Total") ==  amt){
+            if(localStorage.getItem("Total") <=  amt){
                 clearTimeout(fake_timmer);
                 setTimeout(() => {
                     resolve();
@@ -55,12 +71,13 @@ async function fackData(){
 /////////////////////////////////////////////////////////////////////////
 // hideAll();
 function hideAll() {
+    document.getElementById("loadWin").style.display = "none";
     document.getElementById("sec1").style.display = "none";
     document.getElementById("sec2").style.display = "none";
     document.getElementById("sec3").style.display = "none";
     document.getElementById("sec4").style.display = "none";
     document.getElementById("sec5").style.display = "none";
-    document.getElementById("error_page").style.display = "none";
+    document.getElementById("errWin").style.display = "none";
 }
 
 function timmer(timeout, section){
@@ -71,6 +88,10 @@ function timmer(timeout, section){
     }, timeout * 1000);
 }
 
+function sendState(state){
+    console.log("State:", state);
+}
+
 function bcktomain(){
     localStorage.clear();
     timmer(defalut_timeout, 'sec1');
@@ -79,6 +100,7 @@ function bcktomain(){
 function cnfsec1(){
     bcktomain();
     hideAll();
+    sendState('sec2');
     document.getElementById("sec2").style.display = "block";
 }
 
@@ -97,6 +119,7 @@ function cnfsec2(){
     }
     else{
         hideAll();
+        sendState('sec3');
         document.getElementById("sec3").style.display = "block";
         socket.emit('maxAmt', vol);
 
@@ -108,6 +131,7 @@ function cnfsec2(){
 function cnfsec3(){
     clearTimeout(timmerevt);
     hideAll();
+    sendState('sec4');
     document.getElementById("sec4").style.display = "block";
     fackData().then(()=>{
         cnfsec4();
@@ -119,6 +143,7 @@ function cnfsec4(){
     hideAll();
     localStorage.clear();
     document.getElementById('maxPayment').innerHTML = 0;
+    sendState('sec5');
     document.getElementById("sec5").style.display = "block";
     socket.emit('Done');
 }
