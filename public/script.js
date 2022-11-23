@@ -10,6 +10,7 @@ socket.on("disconnect", () => {
 
 socket.on("Connected", function (data) {
     if(data == 'Connected'){
+        localStorage.clear();
         console.log('connected');
         hideAll();
         document.getElementById("sec1").style.display = "block";          
@@ -32,7 +33,6 @@ socket.on('Status', sts => {
     document.getElementById("amount").innerHTML = localStorage.getItem("Amount") || 0;
     document.getElementById("total").innerHTML = localStorage.getItem("Total") || 0;
     document.getElementById("refill").innerHTML = localStorage.getItem("Refill") || 0;
-
 });
 
 socket.on('Amount', amt => {
@@ -71,6 +71,7 @@ async function fackData(){
 /////////////////////////////////////////////////////////////////////////
 // hideAll();
 function hideAll() {
+    console.log("hide all");
     document.getElementById("loadWin").style.display = "none";
     document.getElementById("sec1").style.display = "none";
     document.getElementById("sec2").style.display = "none";
@@ -81,6 +82,7 @@ function hideAll() {
 }
 
 function timmer(timeout, section){
+    console.log('timmer start');
     clearTimeout(timmerevt);
     timmerevt = setTimeout(() => {
         hideAll();
@@ -93,33 +95,34 @@ function sendState(state){
 }
 
 function bcktomain(){
+    console.log('back to main');
     localStorage.clear();
     timmer(defalut_timeout, 'sec1');
 }
 
 function cnfsec1(){
+    console.log('tap2start');
     bcktomain();
-    hideAll();
     sendState('sec2');
+    hideAll();
     document.getElementById("sec2").style.display = "block";
 }
 
 function cnfsec2(){
-    bcktomain();
-    clearTimeout(timmerevt);
+    console.log('bottle volume confirm');
     let vol = (document.getElementById("inputVol").value);
-    document.getElementById("inputVol").value = '';
 
-    // localStorage.setItem("InputVol", document.getElementById("inputVol").value);
-    // let vol = localStorage.getItem("InputVol");
+    // // localStorage.setItem("InputVol", document.getElementById("inputVol").value);
+    // // let vol = localStorage.getItem("InputVol");
 
     if(vol < 10){
         bcktomain();
         alert("Enter 10ml at least!")
     }
     else{
-        hideAll();
+        clearTimeout(timmerevt);
         sendState('sec3');
+        hideAll();
         document.getElementById("sec3").style.display = "block";
         socket.emit('maxAmt', vol);
 
@@ -129,20 +132,29 @@ function cnfsec2(){
 }
 
 function cnfsec3(){
-    clearTimeout(timmerevt);
-    hideAll();
-    sendState('sec4');
-    document.getElementById("sec4").style.display = "block";
-    fackData().then(()=>{
-        cnfsec4();
-    });
+    if(localStorage.getItem("Total") >= 10){
+        clearTimeout(timmerevt);
+        hideAll();
+        sendState('sec4');
+        document.getElementById("sec4").style.display = "block";
+        fackData().then(()=>{
+            cnfsec4();
+        });
+    }
+    else{
+        alert("Enter Cash to Proceed!")
+    }
 }
 
 function cnfsec4(){
     bcktomain();
     hideAll();
     localStorage.clear();
+
+    /* Clear variable data */
     document.getElementById('maxPayment').innerHTML = 0;
+    document.getElementById("inputVol").value = '';
+
     sendState('sec5');
     document.getElementById("sec5").style.display = "block";
     socket.emit('Done');

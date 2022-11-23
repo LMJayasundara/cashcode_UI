@@ -126,7 +126,7 @@ function getTotal(cash) {
   device.on('stacked', (cash) => {
     try {
       io.emit('Status', {
-        "status": `Stacked ${cash.amount}`
+        "status": `Stacked ${cash.amount} Rs`
       });
     } catch (error) {
       io.emit('Status', {
