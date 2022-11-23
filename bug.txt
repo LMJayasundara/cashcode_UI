@@ -6,3 +6,4 @@ software bug:
     sec3 confirm button validation
     cashcode accept note in only sec3
     casttle removed => total 0
+    after cash deposite error occur reject cash becouse total not clear

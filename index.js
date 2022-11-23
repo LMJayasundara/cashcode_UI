@@ -5,6 +5,7 @@ const io = require('socket.io')(server);
 app.set('port', (process.env.PORT || 8080));
 let total = 0;
 let maxAmtx = 0;
+let pageState = null;
 
 app.use(express.static('public'));
 
@@ -19,6 +20,10 @@ const device = new BillValidator({
 function getTotal(cash) {
   total = total + cash;
   return total;
+}
+
+function reset(){
+  total = 0;
 }
 
 (async function () {
@@ -37,8 +42,17 @@ function getTotal(cash) {
     });
 
     socket.on('Done', ()=>{
-      total = 0;
-    })
+      reset();
+    });
+
+    socket.on('Page', (page)=>{
+      // console.log('Page:', page);
+      pageState = page;
+      socket.emit('Status', {
+        "page": page
+      });
+    });
+
   });
 
   device.on('error', (error) => {
@@ -73,6 +87,7 @@ function getTotal(cash) {
   });
 
   device.on('cassetteRemoved', () => {
+    reset();
     io.emit('Status', {
       "error": "Cassette removed"
     });
@@ -95,14 +110,13 @@ function getTotal(cash) {
   });
 
   device.on('accepting', async() => {
-    await device.retrieve();
     console.log('accepting');
   });
 
   device.on('escrow', async (cash) => {
     total = getTotal(cash.amount);
     try {
-      if (total > maxAmtx) {
+      if (total > maxAmtx || pageState == 'sec1' || pageState == 'sec2' || pageState == 'sec4' || pageState == 'sec5' ) {
         total = total - cash.amount;
         await device.retrieve();
       }
@@ -124,6 +138,7 @@ function getTotal(cash) {
   });
 
   device.on('stacked', (cash) => {
+    io.emit('stacked');
     try {
       io.emit('Status', {
         "status": `Stacked ${cash.amount} Rs`

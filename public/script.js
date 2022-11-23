@@ -1,19 +1,29 @@
 const socket = io();
 let timmerevt;
 let defalut_timeout = 10; // Default screen timeout 10s
+let pageState = null;
 
 socket.on("disconnect", () => {
-    console.log('disconnect');
+    // console.log('disconnect');
     hideAll();
     document.getElementById("loadWin").style.display = "block";
 });
 
 socket.on("Connected", function (data) {
     if(data == 'Connected'){
-        localStorage.clear();
-        console.log('connected');
-        hideAll();
-        document.getElementById("sec1").style.display = "block";          
+        /* Check Web Storage support */
+        sendState('sec1');
+        if (typeof(Storage) !== "undefined") {
+            // console.log('connected');
+            clearVal();
+            hideAll();
+            document.getElementById("sec1").style.display = "block";
+          } else {
+            hideAll();
+            document.getElementById("errWin").style.display = "block";
+            document.getElementById("error_msg").innerHTML = "Sorry! No Web Storage support..";
+        }
+                  
     };
 });
 
@@ -23,7 +33,10 @@ socket.on('Status', sts => {
         document.getElementById("errWin").style.display = "none";
         document.getElementById("status").innerHTML = sts.status;
     }
-    else{
+    else if(sts.page != null ){
+        pageState = sts.page;
+    }
+    else if(sts.error != null){
         hideAll();
         bcktomain();
         document.getElementById("errWin").style.display = "block";
@@ -35,18 +48,22 @@ socket.on('Status', sts => {
     document.getElementById("refill").innerHTML = localStorage.getItem("Refill") || 0;
 });
 
+socket.on('stacked', ()=>{
+    clearTimeout(timmerevt);
+});
+
 socket.on('Amount', amt => {
-    console.log('Amount: ', amt)
+    // console.log('Amount: ', amt)
     localStorage.setItem("Amount", amt);
 });
 
 socket.on('Total', ttl => {
-    console.log('Total: ', ttl);
+    // console.log('Total: ', ttl);
     localStorage.setItem("Total", ttl);
 });
 
 socket.on('Refill', refill => {
-    console.log('Refill: ', refill)
+    // console.log('Refill: ', refill)
     localStorage.setItem("Refill", refill);
 });
 
@@ -69,9 +86,9 @@ async function fackData(){
 };
 
 /////////////////////////////////////////////////////////////////////////
-// hideAll();
+
 function hideAll() {
-    console.log("hide all");
+    // console.log("hide all");
     document.getElementById("loadWin").style.display = "none";
     document.getElementById("sec1").style.display = "none";
     document.getElementById("sec2").style.display = "none";
@@ -86,41 +103,51 @@ function timmer(timeout, section){
     clearTimeout(timmerevt);
     timmerevt = setTimeout(() => {
         hideAll();
+        sendState(section);
         document.getElementById(section).style.display = "block";
     }, timeout * 1000);
 }
 
 function sendState(state){
-    console.log("State:", state);
+    // console.log("State:", state);
+    socket.emit('Page', state);
 }
 
-function bcktomain(){
-    console.log('back to main');
+function clearVal(){
+    /* Clear storage data */
     localStorage.clear();
-    timmer(defalut_timeout, 'sec1');
+    /* Clear variable data */
+    document.getElementById('maxPayment').innerHTML = 0;
+    document.getElementById("inputVol").value = '';
+}
+
+function bcktomain(timeout = defalut_timeout){
+    console.log('back to main');
+    clearVal();
+    timmer(timeout, 'sec1');
 }
 
 function cnfsec1(){
-    console.log('tap2start');
-    bcktomain();
+    // console.log('tap2start');
+    bcktomain(30); // Set default timeout to 30s
     sendState('sec2');
     hideAll();
     document.getElementById("sec2").style.display = "block";
 }
 
 function cnfsec2(){
-    console.log('bottle volume confirm');
+    // console.log('bottle volume confirm');
     let vol = (document.getElementById("inputVol").value);
 
-    // // localStorage.setItem("InputVol", document.getElementById("inputVol").value);
-    // // let vol = localStorage.getItem("InputVol");
+    // localStorage.setItem("InputVol", document.getElementById("inputVol").value);
+    // let vol = localStorage.getItem("InputVol");
 
     if(vol < 10){
         bcktomain();
         alert("Enter 10ml at least!")
     }
     else{
-        clearTimeout(timmerevt);
+        bcktomain();
         sendState('sec3');
         hideAll();
         document.getElementById("sec3").style.display = "block";
@@ -142,18 +169,14 @@ function cnfsec3(){
         });
     }
     else{
-        alert("Enter Cash to Proceed!")
+        alert("Enter Cash to Proceed!");
     }
 }
 
 function cnfsec4(){
     bcktomain();
     hideAll();
-    localStorage.clear();
-
-    /* Clear variable data */
-    document.getElementById('maxPayment').innerHTML = 0;
-    document.getElementById("inputVol").value = '';
+    clearVal();
 
     sendState('sec5');
     document.getElementById("sec5").style.display = "block";
@@ -165,16 +188,11 @@ function calprice()
 {
     var total = document.getElementById('inputVol').value;
     // var total = localStorage.getItem("InputVol");
+
     if(total >= 10){
         document.getElementById('maxPayment').innerHTML = total;
     }
     else{
         document.getElementById('maxPayment').innerHTML = 0;
     }
-}
-
-if (typeof(Storage) !== "undefined") {
-    console.log("Code for localStorage/sessionStorage");
-  } else {
-    console.log("Sorry! No Web Storage support..");
 }
