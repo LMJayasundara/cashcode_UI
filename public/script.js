@@ -148,10 +148,6 @@ function cnfsec1(){
 /* Sec2 confirm button event */
 function cnfsec2(){
     let vol = (document.getElementById("inputVol").value);
-
-    // localStorage.setItem("InputVol", document.getElementById("inputVol").value);
-    // let vol = localStorage.getItem("InputVol");
-
     /* check enterd volume */
     if(vol < 10){
         bcktomain(30); // Set default timeout to 30s
@@ -202,7 +198,6 @@ function cnfsec4(){
 function calprice()
 {
     var total = document.getElementById('inputVol').value;
-    // var total = localStorage.getItem("InputVol");
 
     if(total >= 10){
         document.getElementById('maxPayment').innerHTML = total;

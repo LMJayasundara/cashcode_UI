@@ -12,4 +12,3 @@ software bug:
     if device error occur then return cash - Done
     if error occur after payment, show error page -Done
     Back button to sec3
-    add InputVol to local storage
