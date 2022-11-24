@@ -46,7 +46,6 @@ function reset(){
     });
 
     socket.on('Page', (page)=>{
-      // console.log('Page:', page);
       pageState = page;
       socket.emit('Status', {
         "page": page
@@ -56,7 +55,6 @@ function reset(){
   });
 
   device.on('error', (error) => {
-    console.log(error);
     io.emit('Status', {
       "error": error
     });
