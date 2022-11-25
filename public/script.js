@@ -56,6 +56,7 @@ socket.on('Status', sts => {
 /* If stacked triggerd clear timout to redirect index window */
 socket.on('stacked', ()=>{
     clearTimeout(timmerevt);
+    document.getElementById('exitBtnsec2').style.display = 'none';
     stackState = 'stacked';
 });
 
@@ -192,6 +193,10 @@ function cnfsec4(){
     document.getElementById("sec5").style.display = "block";
     socket.emit('Done');
     stackState = null;
+
+    /* Set exit button style to default */
+    document.getElementById('exitBtnsec2').style = 'block';
+    document.getElementById('exitBtnsec2').style.marginTop = '45px';
 }
 
 /* Calculate max price according to the bottle volume */

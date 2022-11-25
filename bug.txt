@@ -1,7 +1,7 @@
 cashcode-nodejs lib bug:
     device powerdown detection error - Done
     device auto get serial port error - Done
-    set execute timeout - Done
+    execute timeout error - Done
 
 software bug:
     connect and disconnect page appering error - Done
@@ -11,4 +11,4 @@ software bug:
     if error occur after payment, show error page before process complete - Done
     if device error occur then return cash - Done
     if error occur after payment, show error page -Done
-    Back button to sec3
+    Back button to sec3 - Done
